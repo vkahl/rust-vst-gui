@@ -65,10 +65,13 @@ impl vst::editor::Editor for PluginGui {
 pub use lib::JavascriptCallback;
 
 pub fn new_plugin_gui(
-    html_document: String, js_callback: JavascriptCallback) -> PluginGui
+    html_document: String,
+    js_callback: JavascriptCallback,
+    width: usize, height: usize
+) -> PluginGui
 {
     #[cfg(windows)]
     {
-        PluginGui {gui: win32::new_plugin_gui(html_document, js_callback)}
+        PluginGui {gui: win32::new_plugin_gui(html_document, js_callback, width, height)}
     }
 }

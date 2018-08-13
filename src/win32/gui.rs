@@ -40,7 +40,7 @@ impl Window {
         0x0070, 0x006c, 0x0075, 0x0067, 0x0069, 0x006e, 0x005f, 0x0077,
         0x0069, 0x006e, 0x0064, 0x006f, 0x0077, 0x0000];
 
-    pub fn new(parent: HWND) -> Window {
+    pub fn new(parent: HWND, width: usize, height: usize) -> Window {
         Window::register_window_class();
 
         let handle = unsafe {
@@ -54,8 +54,8 @@ impl Window {
                 STYLE,
                 0, /*x*/
                 0, /*y*/
-                Window::default_size().0,
-                Window::default_size().1,
+                width as i32,
+                height as i32,
                 parent,
                 null_mut(), /*menu*/
                 GetModuleHandleW(null()),
@@ -428,6 +428,8 @@ struct Gui {
     js_callback: Rc<JavascriptCallback>,
     web_browser: Option<WebBrowser>,
     window: Option<Window>,
+    width: usize,
+    height: usize
 }
 
 impl PluginGui for Gui {
@@ -448,7 +450,7 @@ impl PluginGui for Gui {
     }
 
     fn open(&mut self, parent_handle: *mut c_void) {
-        let window = Window::new(parent_handle as HWND);
+        let window = Window::new(parent_handle as HWND, self.width, self.height);
 
         // TODO: display errors
         self.web_browser = WebBrowser::new(
@@ -474,7 +476,10 @@ impl PluginGui for Gui {
 
 pub fn new_plugin_gui(
     html_document: String,
-    js_callback: JavascriptCallback) -> Box<PluginGui>
+    js_callback: JavascriptCallback,
+    width: usize,
+    height: usize
+) -> Box<PluginGui>
 {
     Box::new(
         Gui {
@@ -482,5 +487,7 @@ pub fn new_plugin_gui(
             js_callback: Rc::new(js_callback),
             web_browser: None,
             window: None,
+            width: width,
+            height: height
         })
 }
