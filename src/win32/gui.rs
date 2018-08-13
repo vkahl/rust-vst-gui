@@ -81,15 +81,6 @@ impl Window {
         (width, height)
     }
 
-    fn default_size() -> (i32, i32) {
-        unsafe {
-            let width = GetSystemMetrics(SM_CXSCREEN) / 2;
-            let height = GetSystemMetrics(SM_CYSCREEN) / 2;
-
-            (width, height)
-        }
-    }
-
     fn register_window_class() {
         let class = WNDCLASSW {
             style: CS_DBLCLKS,

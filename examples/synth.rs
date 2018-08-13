@@ -118,7 +118,10 @@ impl Default for ExampleSynth {
             oscillator: oscillator.clone(),
             gui: vst_gui::new_plugin_gui(
                 String::from(HTML),
-                create_javascript_callback(oscillator.clone())),
+                create_javascript_callback(oscillator.clone()),
+                960,
+                540
+            )
         }
     }
 }
